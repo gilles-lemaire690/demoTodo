@@ -5,5 +5,6 @@ export default interface Todo{
 }
 
 export interface TodoState{
-    todos: Todo[]
+    todos: Todo[],
+    currentTodo?: Todo
 }

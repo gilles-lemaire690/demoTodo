@@ -24,8 +24,10 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import { Provider } from 'react-redux';
-import { store } from './src/store/store';
+import { persistor, store } from './src/store/store';
 import TodoList from './src/screens/todoList';
+import { PersistGate } from 'redux-persist/integration/react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 
 
@@ -33,9 +35,14 @@ import TodoList from './src/screens/todoList';
 
 const App=(): React.JSX.Element=>{
   return(<>
-  <Provider store={store}>
-    <TodoList/>
-  </Provider>
+  <SafeAreaProvider>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <TodoList/>
+     </PersistGate>
+   </Provider>
+  </SafeAreaProvider>;
+  
   </>)
 }
 

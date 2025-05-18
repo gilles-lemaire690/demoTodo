@@ -13,8 +13,9 @@ export const todoSlice = createSlice({
   initialState,
   reducers: {
     addTodo: (state, action: PayloadAction<string>) => {
+      const n = state.todos.length;
       state.todos.push({
-        id: state.todos.length ? state.todos[-1].id + 1 : 1,
+        id: n ? state.todos[n-1].id + 1 : 1,
         name: action.payload,
         status: false,
       });
@@ -31,14 +32,27 @@ export const todoSlice = createSlice({
     updateTodo: (state, action: PayloadAction<{id: number; name: string}>) => {
       let todo = state.todos.find(t => t.id == action.payload.id);
       if (todo) {
-        todo = {...todo, name: action.payload.name};
+        todo.name = action.payload.name;
       }
+
+      // let ind = state.todos.findIndex(t => t.id == action.payload.id);
+      // if (ind >= 0) {
+      //   const todo = state.todos[ind];
+      //   state.todos[ind] = {...todo, name: action.payload.name};
+      // }
     },
+    setCurrentTodo: (state, action: PayloadAction<Todo>) => {
+      state.currentTodo = action.payload;
+    },
+    unSetCurrentTodo: (state, action: PayloadAction) => {
+      delete state.currentTodo;
+    }
   },
 });
 
-export const {addTodo, deleteTodo, toggleTodo, updateTodo} = todoSlice.actions;
+export const {addTodo, deleteTodo, toggleTodo, updateTodo, setCurrentTodo, unSetCurrentTodo} = todoSlice.actions;
 
 export const selectTodos = (state: RootState) => state.todo.todos;
+export const selectCurrentTodo = (state: RootState) => state.todo.currentTodo;
 
 export default todoSlice.reducer;
